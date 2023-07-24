@@ -1,0 +1,37 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Scripts/Actor.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Sounds/Blood Splatter - Sound Effect.wav" type="AudioStream" id=2]
+[ext_resource path="res://Scenes/Arma.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/AI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Spritesheet/spritesheet_characters.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/Vida.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Team.tscn" type="PackedScene" id=8]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 20, 22 )
+
+[node name="Ally" type="KinematicBody2D" groups=["enemy", "obstacles"]]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 352, 176, 38, 44 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -1, 0 )
+shape = SubResource( 1 )
+
+[node name="Hit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )
+
+[node name="Arma" parent="." instance=ExtResource( 3 )]
+position = Vector2( 22, 13 )
+
+[node name="Vida" parent="." instance=ExtResource( 7 )]
+
+[node name="AI" parent="." instance=ExtResource( 4 )]
+
+[node name="Team" parent="." instance=ExtResource( 8 )]
+team = 1

@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/CapturableBase.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Tilesheet/tilesheet_complete.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/Team.tscn" type="PackedScene" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 250, 250 )
+
+[node name="CapturableBase" type="Area2D"]
+position = Vector2( 460, 134 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 1484, 268, 40, 40 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Team" parent="." instance=ExtResource( 4 )]
+
+[node name="CaptureTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_CapturableBase_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_CapturableBase_body_exited"]
+[connection signal="timeout" from="CaptureTimer" to="." method="_on_CaptureTimer_timeout"]

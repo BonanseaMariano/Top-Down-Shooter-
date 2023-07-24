@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Sounds/funnescream.wav" type="AudioStream" id=1]
+[ext_resource path="res://Scenes/Team.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/MapAI.gd" type="Script" id=5]
+
+[node name="MapAI" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="Team" parent="." instance=ExtResource( 2 )]
+team = 1
+
+[node name="UnitContainer" type="Node2D" parent="."]
+
+[node name="RespawnTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="Mori" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 1 )
+
+[connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]

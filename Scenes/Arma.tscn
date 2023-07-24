@@ -1,0 +1,115 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Scripts/Arma.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Bala.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Top-down Tanks/Spritesheet/onlyObjects_default.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sounds/Gun shoot - Sound effect.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/PNG/weapon_machine.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Sounds/Recarga Pistola.wav" type="AudioStream" id=6]
+
+[sub_resource type="Animation" id=2]
+resource_name = "Flash"
+length = 0.05
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Flash:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Flash:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.5, 1.2 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Recarga"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, -90.0, 0.0 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "_stop_recargar"
+} ]
+}
+tracks/2/type = "audio"
+tracks/2/path = NodePath("Recarga")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"clips": [ {
+"end_offset": 0.16,
+"start_offset": 0.0,
+"stream": ExtResource( 6 )
+} ],
+"times": PoolRealArray( 0 )
+}
+
+[node name="Arma" type="Node2D"]
+script = ExtResource( 1 )
+Bala = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 5 )
+
+[node name="FinDelArma" type="Position2D" parent="."]
+position = Vector2( 14, 0 )
+
+[node name="Enfriamiento" type="Timer" parent="."]
+wait_time = 0.7
+one_shot = true
+
+[node name="Flash" type="Sprite" parent="."]
+visible = false
+position = Vector2( 26, 0 )
+rotation = -1.5708
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 324, 334, 20, 24 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Flash = SubResource( 2 )
+anims/Recarga = SubResource( 3 )
+
+[node name="Disparo" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+
+[node name="Recarga" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+
+[connection signal="sin_municion" from="." to="." method="_on_Arma_sin_municion"]
